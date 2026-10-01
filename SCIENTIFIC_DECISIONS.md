@@ -37,3 +37,38 @@ does not touch the test split.
 
 Test seeds start at 40000. Smoke seeds 30000–30079 are never reused. The test
 split is generated and evaluated once after preregistration.
+
+## 2026-10-01 — Post-hoc baseline: two-rate trigger schedule (not part of the registered GO)
+
+Registered results, selections and the test split (seeds 40000+) are unchanged and not used.
+
+**Policy (`TriggerPolicy`).** Looks of L probes spaced d slots. Slow mode: one look every
+`P_slow` slots. After each completed look, CuSum `W <- max(0, W + llr)`; alarm when `W > A`,
+with the same alarm, refractory and post-alarm service logic as `BasePolicy`. If a look's
+llr > tau, the policy enters fast mode: looks back to back (period = look span L*d) for `N_hold`
+looks, then slow mode again. A look with llr > tau while already in fast mode resets the
+counter to `N_hold`. An alarm clears fast mode.
+
+**Grid.** (L, d) in the registered `look_grid` {(8,4), (16,4), (16,8), (32,4)};
+tau in {0, 2, 4}; N_hold in {2, 4, 8}. Budgets 0.025 and 0.05 only.
+
+**LLR.** For each look, the Gaussian LLR fitted on train for the burst at that look and budget
+(`fit_llr(train, burst(L, d))`, identical to the registered fit). No new model.
+
+**Calibration (val only, seeds 20000+).** Cost target = the registered burst's val
+`cost_monitor` at that budget. Alternation as in `run_pilot.py`: A from the FA cap ->
+`P_slow` by bisection in log `P_slow` (integer slots, `P_slow >= span`; stop within 3 %) ->
+twice more -> final A. A = smallest value with val FA <= 1/min (`calibrate_threshold`).
+A config is eligible if its FA cap is met and its final val cost is within 5 % of the target.
+If `P_slow` cannot bring cost down to the target, the config is infeasible.
+**Selection:** lowest val P_fail among eligible configs, per budget.
+
+**Evaluation split `fresh2`.** n = 300, seeds 70000–70299, same Config, events as in the
+registered splits (p_event 0.5). On fresh2 we run the selected trigger and the **registered**
+burst and DE-CuSum (`results/selected_models.pkl`: params, A, LLR, unchanged).
+
+**Metrics per budget and policy.** P_fail; events detected in time (n_event − fails);
+FA/min; monitoring cost; total cost; median delay. Paired bootstrap of
+P_fail(trigger) − P_fail(DE) over all fresh2 event episodes paired by seed (no duration
+cutoff), 5000 resamples, seed 0, 95 % percentile CI. Output: `analysis/trigger.json`.
+Descriptive only; no GO decision depends on it.
