@@ -11,3 +11,5 @@ venv/
 # Regenerated from seeds + Config (radio/scenario fingerprint lives under data/<hash>/)
 data/
 *.npy
+
+CLAUDE.md
