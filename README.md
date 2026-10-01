@@ -41,6 +41,10 @@ PYTHONPATH=. python -m pytest -q tests
 PYTHONPATH=. python scripts/run_pilot.py --quick --root /tmp/d --out /tmp/r   # ~8 min smoke test
 PYTHONPATH=. python scripts/run_pilot.py --workers 16 --root data --out results   # full pilot
 ```
+`--root` is a parent directory. Channels are written under
+`data/<12-hex fingerprint of radio+scenario+backend>/`, so a config change cannot
+silently reuse another setting's `.npy` files. The arrays are determined by the
+episode seeds and are gitignored; delete the fingerprint folder to regenerate.
 The full run (3 budgets, 4 look designs, 3 h values, 200/200/300 episodes) is
 roughly 2–4 h on one core; budgets are independent and can be run in parallel.
 

@@ -7,3 +7,7 @@ venv/
 .env
 *.log
 .ipynb_checkpoints/
+
+# Regenerated from seeds + Config (radio/scenario fingerprint lives under data/<hash>/)
+data/
+*.npy

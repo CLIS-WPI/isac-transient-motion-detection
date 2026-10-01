@@ -1,6 +1,7 @@
 """Pilot: tuned periodic burst vs adapted DE-CuSum (and equal-budget uniform).
 
     PYTHONPATH=. python scripts/run_pilot.py --root data --out results          # full
+    # channels land in data/<fingerprint>/, not data/train directly
     PYTHONPATH=. python scripts/run_pilot.py --quick --root /tmp/d --out /tmp/r # smoke test
 
 Order of operations (enforced): generate data -> fit LLRs on train -> tune on val

@@ -3,13 +3,16 @@
 Splits: train (LLR fitting only), val (threshold / budget / hyper-parameter tuning),
 test (touched once, after the pre-registration file is written).
 Channels and labels are stored in separate files; only the evaluator reads labels.
+On-disk channels live under `root/<fingerprint>/` where the fingerprint hashes
+radio, scenario, backend, snapshot_slots, and force_event.
 
 Episode loops use a fork pool whose workers stay alive across calibration calls.
 Caches (channel, busy, noise) are filled in the parent before the first fork.
 Do not import Sionna/CUDA in this process; GPU channel writes go through spawn.
 """
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 import atexit
+import hashlib
 import json
 import multiprocessing
 import os
@@ -69,6 +72,43 @@ atexit.register(close_workers)
 
 
 # ------------------------------------------------------------------ data
+def cache_spec(cfg, backend="analytic", snapshot_slots=4, force_event=None):
+    """Inputs that determine the on-disk noiseless channel. Busy/noise RAM caches are separate."""
+    return {
+        "radio": asdict(cfg.radio),
+        "scenario": asdict(cfg.scenario),
+        "backend": backend,
+        "snapshot_slots": int(snapshot_slots),
+        "force_event": force_event,
+        "include_clutter": True,
+    }
+
+
+def cache_fingerprint(cfg, backend="analytic", snapshot_slots=4, force_event=None):
+    blob = json.dumps(cache_spec(cfg, backend, snapshot_slots, force_event),
+                      sort_keys=True, default=str, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
+
+
+def cache_root(root, cfg, backend="analytic", snapshot_slots=4, force_event=None):
+    """`root/<fingerprint>/`. A radio or scenario change cannot reuse another setting's npy files."""
+    fp = cache_fingerprint(cfg, backend, snapshot_slots, force_event)
+    d = os.path.join(root, fp)
+    os.makedirs(d, exist_ok=True)
+    spec = cache_spec(cfg, backend, snapshot_slots, force_event)
+    spec["fingerprint"] = fp
+    spec_path = os.path.join(d, "cache_spec.json")
+    if os.path.exists(spec_path):
+        with open(spec_path) as f:
+            old = json.load(f)
+        if old.get("fingerprint") not in (None, fp):
+            raise RuntimeError(f"cache spec mismatch under {d}: {old.get('fingerprint')} != {fp}")
+    else:
+        with open(spec_path, "w") as f:
+            json.dump(spec, f, indent=2, default=str)
+    return d
+
+
 def _sionna_write_batch(payload):
     """Spawn child: init CUDA, write missing npy files, exit. Must not leak into the fork parent."""
     radio, duration, snapshot_slots, items = payload
@@ -82,7 +122,7 @@ def _sionna_write_batch(payload):
 
 def make_split(cfg, name, n, seed0, root, backend="analytic", verbose=True, snapshot_slots=4,
                force_event=None):
-    d = os.path.join(root, name)
+    d = os.path.join(cache_root(root, cfg, backend, snapshot_slots, force_event), name)
     os.makedirs(d, exist_ok=True)
     labels = {}
     t0 = time.time()
@@ -111,7 +151,7 @@ def make_split(cfg, name, n, seed0, root, backend="analytic", verbose=True, snap
     with open(os.path.join(d, "labels.json"), "w") as f:
         json.dump(labels, f, default=float)
     if verbose:
-        print(f"[data] {name}: {n} episodes in {time.time() - t0:.1f}s")
+        print(f"[data] {name}: {n} episodes in {time.time() - t0:.1f}s -> {d}")
     return d
 
 

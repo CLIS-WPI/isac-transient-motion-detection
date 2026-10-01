@@ -1,12 +1,15 @@
 import dataclasses
 import json
+import os
 import numpy as np
 
 from mdsense import Config
 from mdsense.env import episode_noise, run_episode
 from mdsense.evaluate import by_seed
 from mdsense.keyed_rng import STREAM_BUSY, keyed_cnormal, keyed_uniform
-from mdsense.pipeline import Split, close_workers, factory, run_split
+from mdsense.pipeline import (
+    Split, cache_fingerprint, close_workers, factory, make_split, run_split,
+)
 
 
 def _toy_split(tmp_path, seeds=(11, 12, 13, 14, 15, 16, 17, 18)):
@@ -72,3 +75,34 @@ def test_run_split_parallel_matches_serial_by_seed(tmp_path):
             assert s[seed]["cost_total"] == p[seed]["cost_total"]
     finally:
         close_workers()
+
+
+def test_cache_fingerprint_keys_radio_and_scenario():
+    cfg = Config()
+    a = cache_fingerprint(cfg)
+    assert a != cache_fingerprint(dataclasses.replace(
+        cfg, radio=dataclasses.replace(cfg.radio, snr_ref_db=10.0)))
+    assert a != cache_fingerprint(dataclasses.replace(
+        cfg, scenario=dataclasses.replace(cfg.scenario, duration=4.0)))
+    assert a != cache_fingerprint(cfg, backend="sionna")
+    assert a != cache_fingerprint(cfg, force_event=False)
+    assert a == cache_fingerprint(cfg)
+
+
+def test_make_split_writes_under_settings_hash(tmp_path):
+    base = Config()
+    cfg = dataclasses.replace(
+        base, scenario=dataclasses.replace(base.scenario, duration=0.01, warmup=0.0))
+    d1 = make_split(cfg, "toy", 1, 0, str(tmp_path), verbose=False)
+    fp1 = cache_fingerprint(cfg)
+    npy = os.path.join(d1, "ep0.npy")
+    assert os.path.basename(os.path.dirname(d1)) == fp1
+    assert os.path.isfile(npy)
+    assert os.path.isfile(os.path.join(tmp_path, fp1, "cache_spec.json"))
+    mtime = os.path.getmtime(npy)
+    make_split(cfg, "toy", 1, 0, str(tmp_path), verbose=False)
+    assert os.path.getmtime(npy) == mtime
+    cfg2 = dataclasses.replace(cfg, radio=dataclasses.replace(cfg.radio, fc=28e9))
+    d2 = make_split(cfg2, "toy", 1, 0, str(tmp_path), verbose=False)
+    assert os.path.dirname(d2) != os.path.dirname(d1)
+    assert os.path.isfile(os.path.join(d2, "ep0.npy"))
