@@ -288,7 +288,8 @@ def _mp_windows_item(item):
 
 
 def _map_items(fn, items, split, cfg, workers):
-    """Parent caches must already be warm. Fork pool is reused while (split, workers) match."""
+    """Parent caches must already be warm. Fork pool is reused while (split, workers, cfg) match;
+    workers inherit _MP_STATE at fork time, so any cfg change must recreate the pool."""
     global _MP_STATE, _POOL, _POOL_KEY
     workers = resolve_workers(workers)
     if workers > 1 and "fork" not in multiprocessing.get_all_start_methods():
@@ -296,7 +297,7 @@ def _map_items(fn, items, split, cfg, workers):
     _MP_STATE = (split, cfg)
     if workers <= 1 or len(items) <= 1:
         return [fn(item) for item in items]
-    key = (id(split), workers)
+    key = (id(split), workers, repr(cfg))
     if _POOL is None or _POOL_KEY != key:
         close_workers()
         _MP_STATE = (split, cfg)
