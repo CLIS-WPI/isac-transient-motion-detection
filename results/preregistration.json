@@ -1,0 +1,397 @@
+{
+  "written_at": "2026-09-30 19:21:08",
+  "decisions": {
+    "deadline_s": 0.2,
+    "fa_max_per_min": 1.0,
+    "snr_ref_db": 5.0,
+    "go_budgets": [
+      0.025,
+      0.05
+    ],
+    "go_cost_basis": "monitor",
+    "cost_total": "reported_not_gating",
+    "dropped_samples": "no_reconstruction_nyquist_from_median_delivered_interval",
+    "fa_long_negative": "n_neg=200 seed_neg=50000 force_event=False; does not retune A",
+    "ablation": "energy vs doppler vs both on validation only; primary detector uses both",
+    "test_seeds": "40000+ ; smoke 30000-30079 never reused"
+  },
+  "config": {
+    "radio": {
+      "fc": 3500000000.0,
+      "slot_duration": 0.0005,
+      "num_re": 32,
+      "bandwidth": 100000000.0,
+      "radar_position": [
+        0.0,
+        0.0,
+        2.5
+      ],
+      "snr_ref_db": 5.0,
+      "snr_ref_range": 5.0
+    },
+    "scenario": {
+      "duration": 5.0,
+      "warmup": 1.0,
+      "p_event": 0.5,
+      "range_xy": [
+        3.0,
+        7.0
+      ],
+      "azimuth_deg": [
+        -40.0,
+        40.0
+      ],
+      "facing_deg": [
+        -60.0,
+        60.0
+      ],
+      "height": [
+        1.55,
+        1.95
+      ],
+      "event_duration": [
+        0.3,
+        0.8
+      ],
+      "event_peak_speed": [
+        1.5,
+        4.5
+      ],
+      "p_arm_event": 0.7,
+      "breathing_amp": [
+        0.002,
+        0.006
+      ],
+      "breathing_freq": [
+        0.2,
+        0.35
+      ],
+      "sway_amp": [
+        0.003,
+        0.008
+      ],
+      "jitter_amp_deg": 1.5,
+      "nuisance_rate": 1.2,
+      "num_clutter": 6,
+      "clutter_range": [
+        1.0,
+        10.0
+      ],
+      "clutter_rcs": [
+        0.3,
+        3.0
+      ],
+      "drift_amp": 0.002,
+      "drift_phase": 0.002,
+      "comm_busy_prob": 0.3
+    },
+    "du": {
+      "zone": [
+        2.0,
+        9.0
+      ],
+      "clutter_tau": 1.0,
+      "doppler_max": 250.0,
+      "doppler_step": 5.0,
+      "f_cut": 15.0,
+      "min_samples": 4
+    },
+    "env": {
+      "tick_slots": 4,
+      "ctrl_delay_slots": 1,
+      "lead_slots": 1,
+      "proc_delay_slots": 2
+    },
+    "det": {
+      "deadline": 0.2,
+      "fa_grace": 0.5,
+      "refractory": 1.0,
+      "service_duration": 0.2,
+      "llr_clip": 8.0
+    },
+    "pilot": {
+      "budgets": [
+        0.025,
+        0.05,
+        0.1
+      ],
+      "fa_max_per_min": 1.0,
+      "n_train": 200,
+      "n_val": 200,
+      "n_test": 300,
+      "uniform_nw_grid": [
+        8,
+        16,
+        32
+      ],
+      "look_grid": [
+        [
+          8,
+          4
+        ],
+        [
+          16,
+          4
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          32,
+          4
+        ]
+      ],
+      "decusum_h_grid": [
+        2.0,
+        5.0,
+        10.0
+      ],
+      "go_budgets": [
+        0.025,
+        0.05
+      ],
+      "go_max_event_duration": 0.6,
+      "go_min_abs_gain": 0.1,
+      "go_fa_slack": 1.25,
+      "go_cost_ratio": [
+        0.9,
+        1.1
+      ],
+      "go_cost_basis": "monitor",
+      "n_neg": 200,
+      "seed_neg": 50000,
+      "go_fa_neg_slack": 1.25,
+      "ablation_on_val": true,
+      "seed_train": 10000,
+      "seed_val": 20000,
+      "seed_test": 40000
+    }
+  },
+  "ablation_val": {
+    "0.025": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9489795918367347,
+        "fa_per_min": 0.8607317265650298,
+        "n0": 2044,
+        "n1": 177
+      },
+      "energy": {
+        "A": 8.61584999898802,
+        "ok": true,
+        "p_fail": 0.9693877551020408,
+        "fa_per_min": 0.8607317265650298,
+        "n0": 2044,
+        "n1": 177
+      },
+      "doppler": {
+        "A": 3.4656948168713746,
+        "ok": true,
+        "p_fail": 0.9693877551020408,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 2044,
+        "n1": 177
+      }
+    },
+    "0.05": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9183673469387755,
+        "fa_per_min": 0.17214634531300596,
+        "n0": 7920,
+        "n1": 652
+      },
+      "energy": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9183673469387755,
+        "fa_per_min": 0.08607317265650298,
+        "n0": 7920,
+        "n1": 652
+      },
+      "doppler": {
+        "A": 3.261543155649412,
+        "ok": true,
+        "p_fail": 0.9897959183673469,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 7920,
+        "n1": 652
+      }
+    },
+    "0.1": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.5,
+        "fa_per_min": 0.08607317265650298,
+        "n0": 8401,
+        "n1": 691
+      },
+      "energy": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.5510204081632653,
+        "fa_per_min": 0.17214634531300596,
+        "n0": 8401,
+        "n1": 691
+      },
+      "doppler": {
+        "A": 4.186215359646868,
+        "ok": true,
+        "p_fail": 0.7653061224489796,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 8401,
+        "n1": 691
+      }
+    }
+  },
+  "selected": {
+    "0.025": {
+      "uniform": {
+        "params": {
+          "n_window": 8
+        },
+        "A": 21.275327512327053,
+        "val": {
+          "p_fail": 0.9795918367346939,
+          "n_event": 98,
+          "fa_per_min": 0.9468048992215328,
+          "cost_monitor": 1059.0,
+          "cost_total": 1557.64,
+          "median_delay": 0.4462973005126252
+        }
+      },
+      "burst": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 8
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.9489795918367347,
+          "n_event": 98,
+          "fa_per_min": 0.8607317265650298,
+          "cost_monitor": 1053.92,
+          "cost_total": 1549.28,
+          "median_delay": 0.45645998040307356
+        }
+      },
+      "decusum": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 4,
+          "mu": 0.09093698453734385,
+          "h": 2.0
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.8061224489795918,
+          "n_event": 98,
+          "fa_per_min": 0.08607317265650298,
+          "cost_monitor": 1040.8,
+          "cost_total": 1567.8,
+          "median_delay": 0.2591163842322439
+        }
+      }
+    },
+    "0.05": {
+      "uniform": {
+        "params": {
+          "n_window": 8
+        },
+        "A": 45.2898887971283,
+        "val": {
+          "p_fail": 0.9795918367346939,
+          "n_event": 98,
+          "fa_per_min": 0.9468048992215328,
+          "cost_monitor": 2071.08,
+          "cost_total": 2784.16,
+          "median_delay": 0.41622087517372597
+        }
+      },
+      "burst": {
+        "params": {
+          "burst_len": 8,
+          "spacing": 4
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.9183673469387755,
+          "n_event": 98,
+          "fa_per_min": 0.17214634531300596,
+          "cost_monitor": 2136.92,
+          "cost_total": 2564.6,
+          "median_delay": 0.31270180153457616
+        }
+      },
+      "decusum": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 4,
+          "mu": 0.4200618446467567,
+          "h": 2.0
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.5612244897959183,
+          "n_event": 98,
+          "fa_per_min": 0.17214634531300596,
+          "cost_monitor": 2188.88,
+          "cost_total": 3059.84,
+          "median_delay": 0.17639320605408426
+        }
+      }
+    },
+    "0.1": {
+      "uniform": {
+        "params": {
+          "n_window": 8
+        },
+        "A": 32.76244118683573,
+        "val": {
+          "p_fail": 0.5510204081632653,
+          "n_event": 98,
+          "fa_per_min": 0.9468048992215328,
+          "cost_monitor": 3964.68,
+          "cost_total": 5032.52,
+          "median_delay": 0.19471981891123158
+        }
+      },
+      "burst": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 4
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.5,
+          "n_event": 98,
+          "fa_per_min": 0.08607317265650298,
+          "cost_monitor": 4056.08,
+          "cost_total": 4942.8,
+          "median_delay": 0.17498414597881484
+        }
+      },
+      "decusum": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 4,
+          "mu": 1.651698984718558,
+          "h": 5.0
+        },
+        "A": 8.053807673088572,
+        "val": {
+          "p_fail": 0.2755102040816326,
+          "n_event": 98,
+          "fa_per_min": 0.2582195179695089,
+          "cost_monitor": 4051.52,
+          "cost_total": 5048.64,
+          "median_delay": 0.12258029260377934
+        }
+      }
+    }
+  }
+}

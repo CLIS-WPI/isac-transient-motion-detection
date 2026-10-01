@@ -1,0 +1,39 @@
+# GPU 1 only (host index 1 = H100 NVL UUID GPU-509d8ab3-0c8e-8b98-fbf8-0c55f6ba9058).
+# Inside the container that card is remapped to CUDA device 0.
+#
+# Build later (do not start the 2–4 h run until deadline / FA / SNR / go budgets are locked):
+#   docker compose build
+# Smoke:
+#   docker compose run --rm mdsense python scripts/run_pilot.py --quick --root /tmp/d --out /tmp/r
+# Full:
+#   docker compose up
+# Tests:
+#   docker compose run --rm mdsense python -m pytest -q tests
+
+name: mdsense
+
+services:
+  mdsense:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mdsense:phase1
+    container_name: mdsense-gpu1
+    working_dir: /app
+    shm_size: "8gb"
+    environment:
+      PYTHONPATH: /app
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,graphics
+      NVIDIA_VISIBLE_DEVICES: "1"
+      CUDA_VISIBLE_DEVICES: "0"
+      MPLBACKEND: Agg
+    volumes:
+      - ./data:/app/data
+      - ./results:/app/results
+    gpus:
+      - driver: nvidia
+        device_ids: ["1"]
+        capabilities: [gpu, compute, utility, graphics]
+    stdin_open: true
+    tty: true
+    command: ["python", "scripts/run_pilot.py", "--root", "data", "--out", "results"]

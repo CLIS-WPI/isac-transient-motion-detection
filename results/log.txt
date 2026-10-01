@@ -1,0 +1,97 @@
+[cpu] workers=16 BLAS threads=1 (fork pool reused; noise/busy/H cached in parent)
+[tune] budget 0.025 (50 probes/s nominal)
+  uniform nw=8   A=  21.28 val P_fail=0.980 FA/min=0.95 cost=33.1 probes/s (total 48.7) delay_med=446ms
+  uniform nw=16  A=  10.41 val P_fail=0.980 FA/min=0.95 cost=33.9 probes/s (total 43.7) delay_med=651ms
+  uniform nw=32  A=   4.99 val P_fail=1.000 FA/min=0.95 cost=34.4 probes/s (total 39.9) delay_med=696ms
+  burst   look=8x4  A=   8.05 val P_fail=0.969 FA/min=0.69 cost=34.2 probes/s (total 41.5) delay_med=371ms
+  burst   look=16x4  A=   8.22 val P_fail=0.990 FA/min=0.95 cost=32.5 probes/s (total 43.2) delay_med=414ms
+  burst   look=16x8  A=   8.05 val P_fail=0.949 FA/min=0.86 cost=32.9 probes/s (total 48.4) delay_med=456ms
+  burst   look=32x4  A=   4.36 val P_fail=0.959 FA/min=0.95 cost=32.6 probes/s (total 47.2) delay_med=436ms
+  decusum look=8x4  h=2.0  mu= 0.018 A=   8.16 val P_fail=0.929 FA/min=0.95 cost=34.0 probes/s (total 47.3) delay_med=313ms
+  decusum look=8x4  h=5.0  mu= 0.018 A=   8.16 val P_fail=0.929 FA/min=0.95 cost=34.0 probes/s (total 47.3) delay_med=313ms
+  decusum look=8x4  h=10.0 mu= 0.018 A=   8.16 val P_fail=0.929 FA/min=0.95 cost=34.0 probes/s (total 47.3) delay_med=313ms
+  decusum look=16x4  h=2.0  mu= 0.091 A=   8.05 val P_fail=0.806 FA/min=0.09 cost=32.5 probes/s (total 49.0) delay_med=259ms
+  decusum look=16x4  h=5.0  mu= 0.099 A=   8.05 val P_fail=0.837 FA/min=0.09 cost=33.4 probes/s (total 48.5) delay_med=331ms
+  decusum look=16x4  h=10.0 mu= 0.099 A=   8.05 val P_fail=0.837 FA/min=0.09 cost=33.4 probes/s (total 48.5) delay_med=331ms
+  decusum look=16x8  h=2.0  mu= 0.388 A=   8.05 val P_fail=0.847 FA/min=0.34 cost=33.7 probes/s (total 58.2) delay_med=313ms
+  decusum look=16x8  h=5.0  mu= 0.420 A=   8.05 val P_fail=0.816 FA/min=0.60 cost=33.1 probes/s (total 57.3) delay_med=327ms
+  decusum look=16x8  h=10.0 mu= 0.420 A=   8.05 val P_fail=0.816 FA/min=0.60 cost=33.2 probes/s (total 57.0) delay_med=312ms
+  decusum look=32x4  h=2.0  mu= 0.136 A=   6.94 val P_fail=0.908 FA/min=0.95 cost=33.7 probes/s (total 50.2) delay_med=352ms
+  decusum look=32x4  h=5.0  mu= 0.188 A=   8.05 val P_fail=0.929 FA/min=0.09 cost=33.2 probes/s (total 44.3) delay_med=399ms
+  decusum look=32x4  h=10.0 mu= 0.203 A=   7.04 val P_fail=0.929 FA/min=0.95 cost=33.3 probes/s (total 47.8) delay_med=292ms
+[ablation] b=0.025 burst look on val (energy / Doppler / both)
+  both     A=   8.05 P_fail=0.949 FA/min=0.86
+  energy   A=   8.62 P_fail=0.969 FA/min=0.86
+  doppler  A=   3.47 P_fail=0.969 FA/min=0.95
+[tune] budget 0.050 (100 probes/s nominal)
+  uniform nw=8   A=  45.29 val P_fail=0.980 FA/min=0.95 cost=64.7 probes/s (total 87.0) delay_med=416ms
+  uniform nw=16  A=  28.24 val P_fail=1.000 FA/min=0.95 cost=66.4 probes/s (total 81.8) delay_med=532ms
+  uniform nw=32  A=   9.03 val P_fail=0.990 FA/min=0.95 cost=67.3 probes/s (total 80.0) delay_med=570ms
+  burst   look=8x4  A=   8.05 val P_fail=0.918 FA/min=0.17 cost=66.8 probes/s (total 80.1) delay_med=313ms
+  burst   look=16x4  A=   8.05 val P_fail=0.929 FA/min=0.26 cost=64.9 probes/s (total 87.5) delay_med=355ms
+  burst   look=16x8  A=   8.56 val P_fail=0.939 FA/min=0.95 cost=63.3 probes/s (total 93.6) delay_med=297ms
+  burst   look=32x4  A=   8.05 val P_fail=0.980 FA/min=0.95 cost=65.2 probes/s (total 83.5) delay_med=464ms
+  decusum look=8x4  h=2.0  mu= 0.136 A=   8.05 val P_fail=0.684 FA/min=0.26 cost=66.3 probes/s (total 85.2) delay_med=147ms
+  decusum look=8x4  h=5.0  mu= 0.136 A=   8.05 val P_fail=0.684 FA/min=0.26 cost=66.3 probes/s (total 85.2) delay_med=147ms
+  decusum look=8x4  h=10.0 mu= 0.136 A=   8.05 val P_fail=0.684 FA/min=0.26 cost=66.3 probes/s (total 85.2) delay_med=147ms
+  decusum look=16x4  h=2.0  mu= 0.420 A=   8.05 val P_fail=0.561 FA/min=0.17 cost=68.4 probes/s (total 95.6) delay_med=176ms
+  decusum look=16x4  h=5.0  mu= 0.455 A=   8.05 val P_fail=0.571 FA/min=0.26 cost=67.0 probes/s (total 93.9) delay_med=169ms
+  decusum look=16x4  h=10.0 mu= 0.455 A=   8.05 val P_fail=0.571 FA/min=0.26 cost=67.0 probes/s (total 93.9) delay_med=169ms
+  decusum look=16x8  h=2.0  mu= 1.940 A=  16.35 val P_fail=0.878 FA/min=0.95 cost=65.7 probes/s (total 97.4) delay_med=276ms
+  decusum look=16x8  h=5.0  mu= 2.103 A=  16.35 val P_fail=0.847 FA/min=0.95 cost=66.7 probes/s (total 99.1) delay_med=287ms
+  decusum look=16x8  h=10.0 mu= 2.103 A=  16.35 val P_fail=0.847 FA/min=0.95 cost=66.7 probes/s (total 99.1) delay_med=287ms
+  decusum look=32x4  h=2.0  mu= 0.455 A=   8.56 val P_fail=0.735 FA/min=0.95 cost=66.0 probes/s (total 95.3) delay_med=273ms
+  decusum look=32x4  h=5.0  mu= 0.628 A=  16.03 val P_fail=0.949 FA/min=0.95 cost=72.5 probes/s (total 99.4) delay_med=349ms
+  decusum look=32x4  h=10.0 mu= 0.628 A=  17.73 val P_fail=0.949 FA/min=0.95 cost=72.8 probes/s (total 99.6) delay_med=391ms
+[ablation] b=0.050 burst look on val (energy / Doppler / both)
+  both     A=   8.05 P_fail=0.918 FA/min=0.17
+  energy   A=   8.05 P_fail=0.918 FA/min=0.09
+  doppler  A=   3.26 P_fail=0.990 FA/min=0.95
+[tune] budget 0.100 (200 probes/s nominal)
+  uniform nw=8   A=  32.76 val P_fail=0.551 FA/min=0.95 cost=123.9 probes/s (total 157.3) delay_med=195ms
+  uniform nw=16  A=  49.78 val P_fail=0.980 FA/min=0.95 cost=128.8 probes/s (total 152.6) delay_med=451ms
+  uniform nw=32  A=  28.24 val P_fail=1.000 FA/min=0.95 cost=132.6 probes/s (total 148.7) delay_med=533ms
+  burst   look=8x4  A=   8.05 val P_fail=0.714 FA/min=0.09 cost=131.8 probes/s (total 149.0) delay_med=134ms
+  burst   look=16x4  A=   8.05 val P_fail=0.500 FA/min=0.09 cost=126.8 probes/s (total 154.5) delay_med=175ms
+  burst   look=16x8  A=  14.39 val P_fail=0.561 FA/min=0.86 cost=124.0 probes/s (total 156.7) delay_med=199ms
+  burst   look=32x4  A=   9.60 val P_fail=0.990 FA/min=0.86 cost=125.6 probes/s (total 157.4) delay_med=310ms
+  decusum look=8x4  h=2.0  mu= 0.455 A=   8.05 val P_fail=0.633 FA/min=0.43 cost=127.5 probes/s (total 149.2) delay_med=127ms
+  decusum look=8x4  h=5.0  mu= 0.455 A=   8.05 val P_fail=0.633 FA/min=0.43 cost=127.4 probes/s (total 149.2) delay_med=127ms
+  decusum look=8x4  h=10.0 mu= 0.455 A=   8.05 val P_fail=0.633 FA/min=0.43 cost=127.4 probes/s (total 149.2) delay_med=127ms
+  decusum look=16x4  h=2.0  mu= 1.652 A=   8.05 val P_fail=0.286 FA/min=0.26 cost=127.7 probes/s (total 158.8) delay_med=126ms
+  decusum look=16x4  h=5.0  mu= 1.652 A=   8.05 val P_fail=0.276 FA/min=0.26 cost=126.6 probes/s (total 157.8) delay_med=123ms
+  decusum look=16x4  h=10.0 mu= 1.652 A=   8.05 val P_fail=0.276 FA/min=0.26 cost=126.6 probes/s (total 157.8) delay_med=123ms
+  decusum look=16x8  h=2.0  mu=30.000 A=  18.84 val P_fail=0.837 FA/min=0.95 cost=83.5 probes/s (total 115.9) delay_med=269ms
+  decusum look=16x8  h=5.0  mu=30.000 A=  18.84 val P_fail=0.837 FA/min=0.95 cost=83.5 probes/s (total 115.9) delay_med=269ms
+  decusum look=16x8  h=10.0 mu=30.000 A=  18.84 val P_fail=0.837 FA/min=0.95 cost=83.5 probes/s (total 115.9) delay_med=269ms
+  decusum look=32x4  h=2.0  mu= 1.652 A=  24.02 val P_fail=1.000 FA/min=0.95 cost=124.5 probes/s (total 154.2) delay_med=353ms
+  decusum look=32x4  h=5.0  mu= 2.280 A=  23.70 val P_fail=0.888 FA/min=0.95 cost=124.3 probes/s (total 156.5) delay_med=319ms
+  decusum look=32x4  h=10.0 mu= 2.280 A=  23.70 val P_fail=0.888 FA/min=0.95 cost=124.3 probes/s (total 156.4) delay_med=319ms
+[ablation] b=0.100 burst look on val (energy / Doppler / both)
+  both     A=   8.05 P_fail=0.500 FA/min=0.09
+  energy   A=   8.05 P_fail=0.551 FA/min=0.17
+  doppler  A=   4.19 P_fail=0.765 FA/min=0.95
+[prereg] written; selection frozen. long-negative FA then the test split once
+[neg] 200 event-free episodes seed>=50000 (does not retune A)
+[neg]  b=0.025 uniform  P_fail=nan FA/min=1.20 cost=34.5 probes/s (total 40.1) delay_med=nanms
+[test] b=0.025 uniform  P_fail=0.986 FA/min=1.26 cost=32.8 probes/s (total 52.5) delay_med=430ms
+[neg]  b=0.025 burst    P_fail=nan FA/min=0.67 cost=34.4 probes/s (total 37.3) delay_med=nanms
+[test] b=0.025 burst    P_fail=0.966 FA/min=0.80 cost=32.9 probes/s (total 48.9) delay_med=471ms
+[neg]  b=0.025 decusum  P_fail=nan FA/min=0.07 cost=31.2 probes/s (total 31.6) delay_med=nanms
+[test] b=0.025 decusum  P_fail=0.858 FA/min=0.17 cost=33.7 probes/s (total 48.9) delay_med=290ms
+[go?] b=0.025 n=93 gain=+0.108 CI=[+0.022,+0.194] FA_DE=0.17/min FA_neg=0.07/min cost_mon=1.02 cost_tot=1.00 -> {'gain>=min': True, 'CI_low>0': True, 'FA_ok': True, 'cost_ok': True, 'FA_neg_ok': True}
+[neg]  b=0.050 uniform  P_fail=nan FA/min=0.97 cost=68.9 probes/s (total 73.4) delay_med=nanms
+[test] b=0.050 uniform  P_fail=0.993 FA/min=1.14 cost=64.4 probes/s (total 89.5) delay_med=405ms
+[neg]  b=0.050 burst    P_fail=nan FA/min=0.22 cost=69.5 probes/s (total 70.5) delay_med=nanms
+[test] b=0.050 burst    P_fail=0.845 FA/min=0.29 cost=66.8 probes/s (total 80.2) delay_med=218ms
+[neg]  b=0.050 decusum  P_fail=nan FA/min=0.30 cost=70.2 probes/s (total 71.6) delay_med=nanms
+[test] b=0.050 decusum  P_fail=0.561 FA/min=0.40 cost=69.1 probes/s (total 95.9) delay_med=163ms
+[go?] b=0.050 n=93 gain=+0.247 CI=[+0.161,+0.344] FA_DE=0.40/min FA_neg=0.30/min cost_mon=1.03 cost_tot=1.20 -> {'gain>=min': True, 'CI_low>0': True, 'FA_ok': True, 'cost_ok': True, 'FA_neg_ok': True}
+[neg]  b=0.100 uniform  P_fail=nan FA/min=1.12 cost=137.9 probes/s (total 143.1) delay_med=nanms
+[test] b=0.100 uniform  P_fail=0.527 FA/min=1.31 cost=125.0 probes/s (total 157.2) delay_med=179ms
+[neg]  b=0.100 burst    P_fail=nan FA/min=0.22 cost=139.4 probes/s (total 140.5) delay_med=nanms
+[test] b=0.100 burst    P_fail=0.534 FA/min=0.40 cost=127.1 probes/s (total 155.7) delay_med=177ms
+[neg]  b=0.100 decusum  P_fail=nan FA/min=0.53 cost=136.8 probes/s (total 139.2) delay_med=nanms
+[test] b=0.100 decusum  P_fail=0.291 FA/min=0.57 cost=127.3 probes/s (total 158.7) delay_med=122ms
+[verdict] GO  (all pre-registered go budgets must pass)
+[time] 14.9 min

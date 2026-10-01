@@ -1,0 +1,182 @@
+{
+  "written_at": "2026-09-30 22:19:52",
+  "config": {
+    "radio": {
+      "fc": 3500000000.0,
+      "slot_duration": 0.0005,
+      "num_re": 32,
+      "bandwidth": 100000000.0,
+      "radar_position": [
+        0.0,
+        0.0,
+        2.5
+      ],
+      "snr_ref_db": 5.0,
+      "snr_ref_range": 5.0
+    },
+    "scenario": {
+      "duration": 5.0,
+      "warmup": 1.0,
+      "p_event": 0.5,
+      "range_xy": [
+        3.0,
+        7.0
+      ],
+      "azimuth_deg": [
+        -40.0,
+        40.0
+      ],
+      "facing_deg": [
+        -60.0,
+        60.0
+      ],
+      "height": [
+        1.55,
+        1.95
+      ],
+      "event_duration": [
+        0.3,
+        0.8
+      ],
+      "event_peak_speed": [
+        1.5,
+        4.5
+      ],
+      "p_arm_event": 0.7,
+      "breathing_amp": [
+        0.002,
+        0.006
+      ],
+      "breathing_freq": [
+        0.2,
+        0.35
+      ],
+      "sway_amp": [
+        0.003,
+        0.008
+      ],
+      "jitter_amp_deg": 1.5,
+      "nuisance_rate": 1.2,
+      "num_clutter": 6,
+      "clutter_range": [
+        1.0,
+        10.0
+      ],
+      "clutter_rcs": [
+        0.3,
+        3.0
+      ],
+      "drift_amp": 0.002,
+      "drift_phase": 0.002,
+      "comm_busy_prob": 0.3
+    },
+    "du": {
+      "zone": [
+        2.0,
+        9.0
+      ],
+      "clutter_tau": 1.0,
+      "doppler_max": 250.0,
+      "doppler_step": 5.0,
+      "f_cut": 15.0,
+      "min_samples": 4
+    },
+    "env": {
+      "tick_slots": 4,
+      "ctrl_delay_slots": 1,
+      "lead_slots": 1,
+      "proc_delay_slots": 2
+    },
+    "det": {
+      "deadline": 0.2,
+      "fa_grace": 0.5,
+      "refractory": 1.0,
+      "service_duration": 0.2,
+      "llr_clip": 8.0
+    },
+    "pilot": {
+      "budgets": [
+        0.05
+      ],
+      "fa_max_per_min": 1.0,
+      "n_train": 60,
+      "n_val": 60,
+      "n_test": 80,
+      "uniform_nw_grid": [
+        16
+      ],
+      "look_grid": [
+        [
+          16,
+          8
+        ]
+      ],
+      "decusum_h_grid": [
+        5.0
+      ],
+      "go_budgets": [
+        0.05
+      ],
+      "go_max_event_duration": 0.6,
+      "go_min_abs_gain": 0.1,
+      "go_fa_slack": 1.25,
+      "go_cost_ratio": [
+        0.9,
+        1.1
+      ],
+      "seed_train": 10000,
+      "seed_val": 20000,
+      "seed_test": 30000
+    }
+  },
+  "selected": {
+    "0.05": {
+      "uniform": {
+        "params": {
+          "n_window": 16
+        },
+        "A": 27.123454685056625,
+        "val": {
+          "p_fail": 0.9565217391304348,
+          "n_event": 23,
+          "fa_per_min": 0.8308596716985723,
+          "cost_monitor": 2133.0666666666666,
+          "cost_total": 2664.5333333333333,
+          "median_delay": 0.46684563486905706
+        }
+      },
+      "burst": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 8
+        },
+        "A": 8.443238688107435,
+        "val": {
+          "p_fail": 0.8260869565217391,
+          "n_event": 23,
+          "fa_per_min": 0.8308596716985723,
+          "cost_monitor": 2065.733333333333,
+          "cost_total": 2845.3333333333335,
+          "median_delay": 0.25256450977958433
+        }
+      },
+      "decusum": {
+        "params": {
+          "burst_len": 16,
+          "spacing": 8,
+          "mu": 1.651698984718558,
+          "h": 5.0
+        },
+        "A": 14.483851613447818,
+        "val": {
+          "p_fail": 0.4782608695652174,
+          "n_event": 23,
+          "fa_per_min": 0.8308596716985723,
+          "cost_monitor": 2034.5333333333333,
+          "cost_total": 2770.0,
+          "median_delay": 0.17785575572745937
+        }
+      }
+    }
+  }
+}

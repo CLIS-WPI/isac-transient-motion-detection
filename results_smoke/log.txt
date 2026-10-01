@@ -1,0 +1,11 @@
+[tune] budget 0.050 (100 probes/s nominal)
+  uniform nw=16  A=  27.12 val P_fail=0.957 FA/min=0.83 cost=66.7 probes/s (total 83.3) delay_med=467ms
+  burst   look=16x8  A=   8.44 val P_fail=0.826 FA/min=0.83 cost=64.6 probes/s (total 88.9) delay_med=253ms
+  decusum look=16x8  h=5.0  mu= 1.652 A=  14.48 val P_fail=0.478 FA/min=0.83 cost=63.6 probes/s (total 86.6) delay_med=178ms
+[prereg] written; test split is generated and evaluated only now
+[test] b=0.050 uniform  P_fail=1.000 FA/min=0.44 cost=66.8 probes/s (total 79.9) delay_med=560ms
+[test] b=0.050 burst    P_fail=0.930 FA/min=0.87 cost=62.8 probes/s (total 96.0) delay_med=321ms
+[test] b=0.050 decusum  P_fail=0.651 FA/min=1.09 cost=61.8 probes/s (total 100.3) delay_med=234ms
+[go?] b=0.050 n=24 gain=+0.292 CI=[+0.083,+0.500] FA_DE=1.09/min cost_ratio=0.98 -> {'gain>=min': True, 'CI_low>0': True, 'FA_ok': True, 'cost_ok': True}
+[verdict] GO  (all pre-registered go budgets must pass)
+[time] 7.8 min

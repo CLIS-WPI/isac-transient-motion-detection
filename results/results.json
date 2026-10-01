@@ -1,0 +1,308 @@
+{
+  "results": {
+    "0.025": {
+      "uniform": {
+        "p_fail": 0.9864864864864865,
+        "n_event": 148,
+        "fa_per_min": 1.2573480365607632,
+        "cost_monitor": 1050.1066666666666,
+        "cost_total": 1678.88,
+        "median_delay": 0.4303658097961689
+      },
+      "burst": {
+        "p_fail": 0.9662162162162162,
+        "n_event": 148,
+        "fa_per_min": 0.8001305687204857,
+        "cost_monitor": 1053.92,
+        "cost_total": 1564.6133333333332,
+        "median_delay": 0.4707255749945509
+      },
+      "decusum": {
+        "p_fail": 0.8581081081081081,
+        "n_event": 148,
+        "fa_per_min": 0.17145655044010408,
+        "cost_monitor": 1079.0133333333333,
+        "cost_total": 1565.9466666666667,
+        "median_delay": 0.28970552158146523
+      }
+    },
+    "0.05": {
+      "uniform": {
+        "p_fail": 0.9932432432432432,
+        "n_event": 148,
+        "fa_per_min": 1.1430436696006938,
+        "cost_monitor": 2060.5066666666667,
+        "cost_total": 2864.2933333333335,
+        "median_delay": 0.4052578957784003
+      },
+      "burst": {
+        "p_fail": 0.8445945945945946,
+        "n_event": 148,
+        "fa_per_min": 0.28576091740017345,
+        "cost_monitor": 2136.826666666667,
+        "cost_total": 2565.0133333333333,
+        "median_delay": 0.2181701888130929
+      },
+      "decusum": {
+        "p_fail": 0.5608108108108109,
+        "n_event": 148,
+        "fa_per_min": 0.40006528436024286,
+        "cost_monitor": 2210.8,
+        "cost_total": 3067.76,
+        "median_delay": 0.16315427594963172
+      }
+    },
+    "0.1": {
+      "uniform": {
+        "p_fail": 0.527027027027027,
+        "n_event": 148,
+        "fa_per_min": 1.314500220040798,
+        "cost_monitor": 4000.1066666666666,
+        "cost_total": 5029.6,
+        "median_delay": 0.17914473481382664
+      },
+      "burst": {
+        "p_fail": 0.5337837837837838,
+        "n_event": 148,
+        "fa_per_min": 0.40006528436024286,
+        "cost_monitor": 4066.7466666666664,
+        "cost_total": 4981.52,
+        "median_delay": 0.176767496036359
+      },
+      "decusum": {
+        "p_fail": 0.2905405405405405,
+        "n_event": 148,
+        "fa_per_min": 0.5715218348003469,
+        "cost_monitor": 4074.9333333333334,
+        "cost_total": 5079.653333333334,
+        "median_delay": 0.12234343895933264
+      }
+    }
+  },
+  "neg": {
+    "0.025": {
+      "uniform": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 1.2,
+        "cost_monitor": 1103.68,
+        "cost_total": 1283.4,
+        "median_delay": NaN
+      },
+      "burst": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.6749999999999999,
+        "cost_monitor": 1099.32,
+        "cost_total": 1193.16,
+        "median_delay": NaN
+      },
+      "decusum": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.075,
+        "cost_monitor": 999.56,
+        "cost_total": 1010.32,
+        "median_delay": NaN
+      }
+    },
+    "0.05": {
+      "uniform": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.975,
+        "cost_monitor": 2203.8,
+        "cost_total": 2349.84,
+        "median_delay": NaN
+      },
+      "burst": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.22499999999999998,
+        "cost_monitor": 2222.52,
+        "cost_total": 2256.24,
+        "median_delay": NaN
+      },
+      "decusum": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.3,
+        "cost_monitor": 2246.72,
+        "cost_total": 2290.16,
+        "median_delay": NaN
+      }
+    },
+    "0.1": {
+      "uniform": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 1.125,
+        "cost_monitor": 4413.64,
+        "cost_total": 4578.56,
+        "median_delay": NaN
+      },
+      "burst": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.22499999999999998,
+        "cost_monitor": 4460.16,
+        "cost_total": 4494.96,
+        "median_delay": NaN
+      },
+      "decusum": {
+        "p_fail": NaN,
+        "n_event": 0,
+        "fa_per_min": 0.525,
+        "cost_monitor": 4377.24,
+        "cost_total": 4453.88,
+        "median_delay": NaN
+      }
+    }
+  },
+  "ablation_val": {
+    "0.025": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9489795918367347,
+        "fa_per_min": 0.8607317265650298,
+        "n0": 2044,
+        "n1": 177
+      },
+      "energy": {
+        "A": 8.61584999898802,
+        "ok": true,
+        "p_fail": 0.9693877551020408,
+        "fa_per_min": 0.8607317265650298,
+        "n0": 2044,
+        "n1": 177
+      },
+      "doppler": {
+        "A": 3.4656948168713746,
+        "ok": true,
+        "p_fail": 0.9693877551020408,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 2044,
+        "n1": 177
+      }
+    },
+    "0.05": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9183673469387755,
+        "fa_per_min": 0.17214634531300596,
+        "n0": 7920,
+        "n1": 652
+      },
+      "energy": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.9183673469387755,
+        "fa_per_min": 0.08607317265650298,
+        "n0": 7920,
+        "n1": 652
+      },
+      "doppler": {
+        "A": 3.261543155649412,
+        "ok": true,
+        "p_fail": 0.9897959183673469,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 7920,
+        "n1": 652
+      }
+    },
+    "0.1": {
+      "both": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.5,
+        "fa_per_min": 0.08607317265650298,
+        "n0": 8401,
+        "n1": 691
+      },
+      "energy": {
+        "A": 8.053807673088572,
+        "ok": true,
+        "p_fail": 0.5510204081632653,
+        "fa_per_min": 0.17214634531300596,
+        "n0": 8401,
+        "n1": 691
+      },
+      "doppler": {
+        "A": 4.186215359646868,
+        "ok": true,
+        "p_fail": 0.7653061224489796,
+        "fa_per_min": 0.9468048992215328,
+        "n0": 8401,
+        "n1": 691
+      }
+    }
+  },
+  "verdicts": {
+    "0.025": {
+      "n_events": 93,
+      "gain": 0.10752688172043011,
+      "ci": [
+        0.021505376344086023,
+        0.1935483870967742
+      ],
+      "fa_decusum": 0.17145655044010408,
+      "fa_ci_decusum": [
+        0.0,
+        0.46039438319913595
+      ],
+      "cost_ratio": 1.0238095238095237,
+      "cost_total_ratio": 1.0008521807304893,
+      "fa_neg_decusum": 0.075,
+      "criteria": {
+        "gain>=min": true,
+        "CI_low>0": true,
+        "FA_ok": true,
+        "cost_ok": true,
+        "FA_neg_ok": true
+      },
+      "go": true
+    },
+    "0.05": {
+      "n_events": 93,
+      "gain": 0.24731182795698925,
+      "ci": [
+        0.16129032258064516,
+        0.34408602150537637
+      ],
+      "fa_decusum": 0.40006528436024286,
+      "fa_ci_decusum": [
+        0.11361041761818655,
+        0.7562877842499599
+      ],
+      "cost_ratio": 1.0346183125132595,
+      "cost_total_ratio": 1.1960015802386994,
+      "fa_neg_decusum": 0.3,
+      "criteria": {
+        "gain>=min": true,
+        "CI_low>0": true,
+        "FA_ok": true,
+        "cost_ok": true,
+        "FA_neg_ok": true
+      },
+      "go": true
+    }
+  },
+  "go": true,
+  "decisions": {
+    "deadline_s": 0.2,
+    "fa_max_per_min": 1.0,
+    "snr_ref_db": 5.0,
+    "go_budgets": [
+      0.025,
+      0.05
+    ],
+    "go_cost_basis": "monitor",
+    "cost_total": "reported_not_gating",
+    "dropped_samples": "no_reconstruction_nyquist_from_median_delivered_interval",
+    "fa_long_negative": "n_neg=200 seed_neg=50000 force_event=False; does not retune A",
+    "ablation": "energy vs doppler vs both on validation only; primary detector uses both",
+    "test_seeds": "40000+ ; smoke 30000-30079 never reused"
+  }
+}

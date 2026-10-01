@@ -1,0 +1,54 @@
+{
+  "results": {
+    "0.05": {
+      "uniform": {
+        "p_fail": 1.0,
+        "n_event": 43,
+        "fa_per_min": 0.4351908296560965,
+        "cost_monitor": 2138.5,
+        "cost_total": 2557.4,
+        "median_delay": 0.5598585730451342
+      },
+      "burst": {
+        "p_fail": 0.9302325581395349,
+        "n_event": 43,
+        "fa_per_min": 0.870381659312193,
+        "cost_monitor": 2010.8,
+        "cost_total": 3071.3,
+        "median_delay": 0.32054609391669
+      },
+      "decusum": {
+        "p_fail": 0.6511627906976745,
+        "n_event": 43,
+        "fa_per_min": 1.0879770741402413,
+        "cost_monitor": 1978.4,
+        "cost_total": 3210.4,
+        "median_delay": 0.2342662204101177
+      }
+    }
+  },
+  "verdicts": {
+    "0.05": {
+      "n_events": 24,
+      "gain": 0.2916666666666667,
+      "ci": [
+        0.08333333333333333,
+        0.5
+      ],
+      "fa_decusum": 1.0879770741402413,
+      "fa_ci_decusum": [
+        0.0,
+        2.585313727484285
+      ],
+      "cost_ratio": 0.983887010145216,
+      "criteria": {
+        "gain>=min": true,
+        "CI_low>0": true,
+        "FA_ok": true,
+        "cost_ok": true
+      },
+      "go": true
+    }
+  },
+  "go": true
+}
