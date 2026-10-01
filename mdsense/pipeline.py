@@ -24,7 +24,7 @@ from .channel import dense_channel
 from .env import episode_noise, public_info, run_episode
 from .evaluate import episode_outcome, aggregate
 from .keyed_rng import STREAM_BUSY, keyed_uniform
-from .policies import UniformPolicy, BurstPolicy, DECuSumPolicy
+from .policies import UniformPolicy, BurstPolicy, DECuSumPolicy, TriggerPolicy
 from .score_model import GaussianLLR, SliceLLR
 
 # Inherited by forked workers: (split, cfg). Policy kwargs travel with each task.
@@ -232,6 +232,9 @@ class PolicyMaker:
         if self.kind == "decusum":
             return DECuSumPolicy(self.pub, self.du, self.det, p["burst_len"], p["mu"], p["h"],
                                  p.get("spacing", 1), **kw)
+        if self.kind == "trigger":
+            return TriggerPolicy(self.pub, self.du, self.det, p["burst_len"], p["p_slow"], p["tau"],
+                                 p["n_hold"], p.get("spacing", 1), **kw)
         raise ValueError(self.kind)
 
 

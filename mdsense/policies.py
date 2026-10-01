@@ -168,6 +168,43 @@ class BurstPolicy(_LookPolicy):
         return reqs
 
 
+class TriggerPolicy(_LookPolicy):
+    """Two-rate schedule (post-hoc baseline): one look every p_slow slots; a look with
+    llr > tau switches to back-to-back looks for n_hold looks (re-armed by further
+    llr > tau), then back to slow. Same CuSum and alarm logic as the burst."""
+    name = "trigger"
+
+    def __init__(self, pub, du_cfg, det_cfg, burst_len, p_slow, tau, n_hold, spacing=1, **kw):
+        super().__init__(pub, du_cfg, det_cfg, burst_len, spacing, **kw)
+        self.p_slow = max(self.span, int(round(p_slow)))
+        self.tau, self.n_hold = tau, n_hold
+        self.fast_left = 0                      # fast looks still to schedule
+        self.next_start = 0
+        self.last_end = 0                       # end of the last scheduled look
+
+    def _update(self, s):
+        self.W = max(0.0, self.W + s)
+        if s > self.tau:
+            self.fast_left = self.n_hold
+            self.next_start = min(self.next_start, self.last_end)
+        return self.W > self.A
+
+    def _after_alarm(self):
+        self.fast_left = 0
+
+    def _monitor_requests(self, slot):
+        lo, hi = slot + self.first_ok, slot + self.first_ok + self.pub.tick_slots
+        self.next_start = max(self.next_start, lo, self.last_end)
+        reqs = []
+        while self.next_start < hi:
+            reqs += self._new_look(self.next_start)[1]
+            self.last_end = self.next_start + self.span
+            if self.fast_left > 0:
+                self.fast_left -= 1
+            self.next_start += self.span if self.fast_left > 0 else self.p_slow
+        return reqs
+
+
 class DECuSumPolicy(_LookPolicy):
     name = "decusum"
 
