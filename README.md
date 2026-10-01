@@ -1,7 +1,7 @@
 # mdsense — phase-1 pilot
 
-Question: at equal realised sensing cost and equal false-alarm rate, does an adapted
-DE-CuSum observation policy detect the onset of fast limb motion (static torso) within a
+Question: at approximately matched monitoring cost and a common false-alarm cap, does an
+adapted DE-CuSum observation policy detect the onset of fast limb motion (static torso) within a
 deadline more often than a tuned periodic burst? Uniform equal-budget sampling is a third
 reference. No optimality is claimed for the DE-CuSum adaptation.
 
