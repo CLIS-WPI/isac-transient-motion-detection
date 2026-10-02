@@ -1,0 +1,436 @@
+{
+  "note": "robustness check, no retuning; SCIENTIFIC_DECISIONS.md 2026-10-01; test split (seeds 40000+) never loaded",
+  "room": {
+    "scene": "room_8x10x3",
+    "max_depth": 3,
+    "background": true
+  },
+  "snapshot_slots": 8,
+  "fingerprint": "24e1cdbd44be",
+  "n_room": 200,
+  "seeds_room": [
+    80000,
+    80199
+  ],
+  "primary": {
+    "0.025": {
+      "uniform": {
+        "p_fail": 0.9902912621359223,
+        "n_event": 103,
+        "events_in_time": 1,
+        "fa_per_min": 2.9385922587715263,
+        "cost_monitor": 1020.0,
+        "cost_total": 1898.04,
+        "median_delay": 0.4153612884725306
+      },
+      "burst": {
+        "p_fail": 0.941747572815534,
+        "n_event": 103,
+        "events_in_time": 6,
+        "fa_per_min": 3.370738179179104,
+        "cost_monitor": 1010.24,
+        "cost_total": 1939.28,
+        "median_delay": 0.4403673252198893
+      },
+      "decusum": {
+        "p_fail": 0.7766990291262136,
+        "n_event": 103,
+        "events_in_time": 23,
+        "fa_per_min": 0.6050042885706084,
+        "cost_monitor": 1299.24,
+        "cost_total": 1905.8,
+        "median_delay": 0.2132091370107858
+      },
+      "trigger": {
+        "p_fail": 0.7766990291262136,
+        "n_event": 103,
+        "events_in_time": 23,
+        "fa_per_min": 2.4200171542824336,
+        "cost_monitor": 1113.48,
+        "cost_total": 2141.84,
+        "median_delay": 0.2722824574223164
+      },
+      "burst_minus_decusum": {
+        "gain": 0.13559322033898305,
+        "ci95": [
+          0.01694915254237288,
+          0.2542372881355932
+        ],
+        "n_paired": 59
+      },
+      "trigger_minus_decusum": {
+        "p_fail_diff": 0.0,
+        "ci95": [
+          -0.0970873786407767,
+          0.0970873786407767
+        ],
+        "n_paired": 103
+      }
+    },
+    "0.05": {
+      "uniform": {
+        "p_fail": 0.9611650485436893,
+        "n_event": 103,
+        "events_in_time": 4,
+        "fa_per_min": 2.0743004179563713,
+        "cost_monitor": 2033.24,
+        "cost_total": 2956.24,
+        "median_delay": 0.38028245742231603
+      },
+      "burst": {
+        "p_fail": 0.8155339805825242,
+        "n_event": 103,
+        "events_in_time": 19,
+        "fa_per_min": 1.0371502089781857,
+        "cost_monitor": 2112.2,
+        "cost_total": 2703.36,
+        "median_delay": 0.22952883938670654
+      },
+      "decusum": {
+        "p_fail": 0.5145631067961165,
+        "n_event": 103,
+        "events_in_time": 50,
+        "fa_per_min": 1.1235793930597011,
+        "cost_monitor": 2298.48,
+        "cost_total": 3315.48,
+        "median_delay": 0.15828458564024805
+      },
+      "trigger": {
+        "p_fail": 0.49514563106796117,
+        "n_event": 103,
+        "events_in_time": 52,
+        "fa_per_min": 0.7778626567336393,
+        "cost_monitor": 2180.52,
+        "cost_total": 3130.8,
+        "median_delay": 0.1539805047926408
+      },
+      "burst_minus_decusum": {
+        "gain": 0.3050847457627119,
+        "ci95": [
+          0.1694915254237288,
+          0.4406779661016949
+        ],
+        "n_paired": 59
+      },
+      "trigger_minus_decusum": {
+        "p_fail_diff": -0.019417475728155338,
+        "ci95": [
+          -0.11650485436893204,
+          0.06796116504854369
+        ],
+        "n_paired": 103
+      }
+    },
+    "0.1": {
+      "uniform": {
+        "p_fail": 0.5242718446601942,
+        "n_event": 103,
+        "events_in_time": 49,
+        "fa_per_min": 2.333587970200918,
+        "cost_monitor": 3869.52,
+        "cost_total": 5148.64,
+        "median_delay": 0.19198310669666796
+      },
+      "burst": {
+        "p_fail": 0.5048543689320388,
+        "n_event": 103,
+        "events_in_time": 51,
+        "fa_per_min": 0.7778626567336393,
+        "cost_monitor": 4045.24,
+        "cost_total": 5014.56,
+        "median_delay": 0.17356200919001719
+      },
+      "decusum": {
+        "p_fail": 0.2621359223300971,
+        "n_event": 103,
+        "events_in_time": 76,
+        "fa_per_min": 1.2100085771412168,
+        "cost_monitor": 4018.76,
+        "cost_total": 5170.4,
+        "median_delay": 0.11545047643574269
+      },
+      "burst_minus_decusum": {
+        "gain": 0.22033898305084745,
+        "ci95": [
+          0.1016949152542373,
+          0.3389830508474576
+        ],
+        "n_paired": 59
+      }
+    }
+  },
+  "secondary": {
+    "label": "SECONDARY: threshold-only recalibration on room_val; costs not re-matched",
+    "seeds_room_val": [
+      81000,
+      81099
+    ],
+    "thresholds": {
+      "0.025": {
+        "uniform": {
+          "A_registered": 21.275327512327053,
+          "A_room_val": 53.609708013387966,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        },
+        "burst": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 14.779955597469812,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.6667424512704188
+        },
+        "decusum": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 8.053807673088572,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.500056838452814
+        },
+        "trigger": {
+          "A_registered": 8.79199012928786,
+          "A_room_val": 22.914100673209973,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        }
+      },
+      "0.05": {
+        "uniform": {
+          "A_registered": 45.2898887971283,
+          "A_room_val": 118.83560097655067,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        },
+        "burst": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 6.403123514638083,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        },
+        "decusum": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 8.053807673088572,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        },
+        "trigger": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 8.274085499715905,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.6667424512704188
+        }
+      },
+      "0.1": {
+        "uniform": {
+          "A_registered": 32.76244118683573,
+          "A_room_val": 106.67718987329307,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.6667424512704188
+        },
+        "burst": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 11.593228060548775,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        },
+        "decusum": {
+          "A_registered": 8.053807673088572,
+          "A_room_val": 11.360967483460737,
+          "fa_ok": true,
+          "room_val_fa_per_min": 0.8334280640880234
+        }
+      }
+    },
+    "room_val_gen_s": 21.178471565246582,
+    "results": {
+      "0.025": {
+        "uniform": {
+          "p_fail": 0.9902912621359223,
+          "n_event": 103,
+          "events_in_time": 1,
+          "fa_per_min": 1.1235793930597011,
+          "cost_monitor": 1096.96,
+          "cost_total": 1325.0,
+          "median_delay": 0.5884788293463818
+        },
+        "burst": {
+          "p_fail": 0.9805825242718447,
+          "n_event": 103,
+          "events_in_time": 2,
+          "fa_per_min": 1.4692961293857631,
+          "cost_monitor": 1048.96,
+          "cost_total": 1587.96,
+          "median_delay": 0.4403673252198893
+        },
+        "decusum": {
+          "p_fail": 0.7766990291262136,
+          "n_event": 103,
+          "events_in_time": 23,
+          "fa_per_min": 0.6050042885706084,
+          "cost_monitor": 1299.24,
+          "cost_total": 1905.8,
+          "median_delay": 0.2132091370107858
+        },
+        "trigger": {
+          "p_fail": 0.941747572815534,
+          "n_event": 103,
+          "events_in_time": 6,
+          "fa_per_min": 0.7778626567336393,
+          "cost_monitor": 1222.96,
+          "cost_total": 1851.6,
+          "median_delay": 0.36357932498600753
+        },
+        "burst_minus_decusum": {
+          "gain": 0.22033898305084745,
+          "ci95": [
+            0.11864406779661017,
+            0.3220338983050847
+          ],
+          "n_paired": 59
+        },
+        "trigger_minus_decusum": {
+          "p_fail_diff": 0.1650485436893204,
+          "ci95": [
+            0.08737864077669903,
+            0.2524271844660194
+          ],
+          "n_paired": 103
+        }
+      },
+      "0.05": {
+        "uniform": {
+          "p_fail": 1.0,
+          "n_event": 103,
+          "events_in_time": 0,
+          "fa_per_min": 0.9507210248966702,
+          "cost_monitor": 2201.56,
+          "cost_total": 2417.24,
+          "median_delay": 0.7474392417640436
+        },
+        "burst": {
+          "p_fail": 0.7087378640776699,
+          "n_event": 103,
+          "events_in_time": 30,
+          "fa_per_min": 3.5435965473421347,
+          "cost_monitor": 2038.16,
+          "cost_total": 3009.44,
+          "median_delay": 0.10904007778584468
+        },
+        "decusum": {
+          "p_fail": 0.5145631067961165,
+          "n_event": 103,
+          "events_in_time": 50,
+          "fa_per_min": 1.1235793930597011,
+          "cost_monitor": 2298.48,
+          "cost_total": 3315.48,
+          "median_delay": 0.15828458564024805
+        },
+        "trigger": {
+          "p_fail": 0.49514563106796117,
+          "n_event": 103,
+          "events_in_time": 52,
+          "fa_per_min": 0.6914334726521238,
+          "cost_monitor": 2185.4,
+          "cost_total": 3121.96,
+          "median_delay": 0.1539805047926408
+        },
+        "burst_minus_decusum": {
+          "gain": 0.2033898305084746,
+          "ci95": [
+            0.06779661016949153,
+            0.3389830508474576
+          ],
+          "n_paired": 59
+        },
+        "trigger_minus_decusum": {
+          "p_fail_diff": -0.019417475728155338,
+          "ci95": [
+            -0.11650485436893204,
+            0.06796116504854369
+          ],
+          "n_paired": 103
+        }
+      },
+      "0.1": {
+        "uniform": {
+          "p_fail": 1.0,
+          "n_event": 103,
+          "events_in_time": 0,
+          "fa_per_min": 0.6050042885706084,
+          "cost_monitor": 4229.6,
+          "cost_total": 4782.84,
+          "median_delay": 0.46192837064604664
+        },
+        "burst": {
+          "p_fail": 0.5825242718446602,
+          "n_event": 103,
+          "events_in_time": 43,
+          "fa_per_min": 0.4321459204075774,
+          "cost_monitor": 4077.36,
+          "cost_total": 4974.96,
+          "median_delay": 0.18686908938098812
+        },
+        "decusum": {
+          "p_fail": 0.2815533980582524,
+          "n_event": 103,
+          "events_in_time": 74,
+          "fa_per_min": 0.7778626567336393,
+          "cost_monitor": 4086.68,
+          "cost_total": 5137.92,
+          "median_delay": 0.1208817208634998
+        },
+        "burst_minus_decusum": {
+          "gain": 0.2542372881355932,
+          "ci95": [
+            0.11864406779661017,
+            0.3898305084745763
+          ],
+          "n_paired": 59
+        }
+      }
+    }
+  },
+  "main_result_holds": true,
+  "fa_flagged": [
+    [
+      0.025,
+      "uniform"
+    ],
+    [
+      0.025,
+      "burst"
+    ],
+    [
+      0.05,
+      "uniform"
+    ],
+    [
+      0.1,
+      "uniform"
+    ]
+  ],
+  "timing_s": {
+    "room_split": 3.69232177734375,
+    "total": 37.839728116989136
+  },
+  "generation": {
+    "gpu": "NVIDIA H100 NVL (host GPU 1), mitsuba variant cuda_ad_mono_polarized, sionna-rt 2.2.0",
+    "snapshot_check_seed80000": {
+      "corr_dynamic_S8_vs_S4": 0.999992,
+      "threshold": 0.999,
+      "passed": true
+    },
+    "timing_3_episodes_single_process_s": 1130,
+    "per_episode_single_process_s": 377,
+    "estimate_single_process_h": {
+      "300": 31.4,
+      "200": 20.9
+    },
+    "parallel_writers_on_gpu1": 6,
+    "per_episode_parallel_mean_s": 628,
+    "throughput_s_per_episode": 105,
+    "estimate_300_parallel_h": 8.4,
+    "n_rule": "300 episodes > 8 h -> n_room = 200 (pre-registered)",
+    "room_wall_h": 6.3,
+    "room_val_wall_h": 2.95,
+    "note": "episodes are deterministic per seed; parallel writers call the same dense_channel as make_split"
+  }
+}
