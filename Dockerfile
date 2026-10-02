@@ -30,8 +30,9 @@ WORKDIR /app
 RUN python3 -m venv /opt/venv
 ENV PATH=/opt/venv/bin:$PATH
 
+COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir numpy scipy matplotlib pytest sionna-rt==2.2.0
+    && pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

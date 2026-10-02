@@ -38,3 +38,8 @@ plausibly the newer plotting stack).
 
 No code, `Dockerfile`, config, `results/`, `analysis/`, or test-split data was changed or loaded.
 The container mounted only `figures/`. `run_pilot.py` was not run.
+
+## Addendum (2026-10-02)
+The image gap above is fixed: `libatomic1` is in the `Dockerfile` (commit `6e2e1f3`), and Python
+packages are pinned in `requirements.txt`. A fresh image with no manual installs passes
+`python -m pytest -q tests`: 18 passed, 0 skipped (17 above + `test_trigger.py`).

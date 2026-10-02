@@ -1,0 +1,9 @@
+# Versions in the verified Docker image (Python 3.12.3, CUDA 12.6.3). sionna-rt / mitsuba / drjit are
+# only needed for the Sionna backend, the motivating figure, its tests and the room experiment.
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+pytest==9.1.1
+sionna-rt==2.2.0
+mitsuba==3.9.1
+drjit==1.5.0

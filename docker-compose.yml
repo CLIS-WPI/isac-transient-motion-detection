@@ -1,14 +1,11 @@
 # GPU 1 only (host index 1 = H100 NVL UUID GPU-509d8ab3-0c8e-8b98-fbf8-0c55f6ba9058).
 # Inside the container that card is remapped to CUDA device 0.
 #
-# Build later (do not start the 2–4 h run until deadline / FA / SNR / go budgets are locked):
+# See README.md "Reproducing the paper" for every command. Typical use:
 #   docker compose build
-# Smoke:
-#   docker compose run --rm mdsense python scripts/run_pilot.py --quick --root /tmp/d --out /tmp/r
-# Full:
-#   docker compose up
-# Tests:
 #   docker compose run --rm mdsense python -m pytest -q tests
+#   docker compose run --rm mdsense python scripts/analysis_posthoc.py --root data --out analysis
+# `docker compose up` re-runs the registered pilot (writes results/; generates the test split).
 
 name: mdsense
 
@@ -30,6 +27,8 @@ services:
     volumes:
       - ./data:/app/data
       - ./results:/app/results
+      - ./analysis:/app/analysis
+      - ./figures:/app/figures
     gpus:
       - driver: nvidia
         device_ids: ["1"]
