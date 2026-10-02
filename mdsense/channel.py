@@ -64,7 +64,24 @@ def clutter_channel_analytic(scn, radio):
     return _point_response(scn.clutter_pos, scn.clutter_rcs, radio, np.asarray(radio.radar_position))
 
 
-def dense_channel(scn, radio, duration, backend="analytic", snapshot_slots=4, include_clutter=True):
+# Closed concrete room for the multipath robustness check (SCIENTIFIC_DECISIONS.md 2026-10-01).
+# The radar (0, 0, 2.5) is 0.5 m from the back wall. Width 10 m holds the registered person
+# geometry (|y| <= 4.5 m).
+ROOM_BOX = {"room_8x10x3": ((-0.5, 7.5), (-5.0, 5.0), (0.0, 3.0))}
+
+
+def scene_xml(name):
+    (x0, x1), (y0, y1), (z0, z1) = ROOM_BOX[name]
+    return (f'<scene version="2.1.0"><bsdf type="itu-radio-material" id="concrete">'
+            f'<string name="type" value="concrete"/><float name="thickness" value="0.2"/></bsdf>'
+            f'<shape type="cube" id="room"><transform name="to_world">'
+            f'<scale x="{(x1 - x0) / 2}" y="{(y1 - y0) / 2}" z="{(z1 - z0) / 2}"/>'
+            f'<translate x="{(x0 + x1) / 2}" y="{(y0 + y1) / 2}" z="{(z0 + z1) / 2}"/></transform>'
+            f'<ref id="concrete" name="bsdf"/></shape></scene>')
+
+
+def dense_channel(scn, radio, duration, backend="analytic", snapshot_slots=4, include_clutter=True,
+                  scene=None, max_depth=1, background=False):
     n_slots = int(round(duration / radio.slot_duration))
     t = np.arange(n_slots) * radio.slot_duration
     if backend == "analytic":
@@ -74,7 +91,8 @@ def dense_channel(scn, radio, duration, backend="analytic", snapshot_slots=4, in
         if include_clutter:
             H += clutter_channel_analytic(scn, radio)[None]
     elif backend == "sionna":
-        H = SionnaBackend(radio, snapshot_slots).dense(scn, n_slots, include_clutter)
+        H = SionnaBackend(radio, snapshot_slots, scene, max_depth, background).dense(
+            scn, n_slots, include_clutter)
     else:
         raise ValueError(backend)
     return (H * common_drift(scn, t)[:, None]).astype(np.complex64)
@@ -84,9 +102,14 @@ class SionnaBackend:
     """Each body segment and clutter point is a ConstantRCSSensingTarget (2 cm box, so
     that artificial inter-segment shadowing is negligible). Per snapshot: set position,
     velocity and sigma (ellipsoid RCS for the current aspect), solve, expand in time
-    with the Doppler shifts, convert to the sensing REs."""
+    with the Doppler shifts, convert to the sensing REs.
 
-    def __init__(self, radio, snapshot_slots=4):
+    Optional `scene` (a ROOM_BOX name) adds walls: sensing paths up to `max_depth`
+    interactions (LoS + specular reflections, no refraction), and with `background` the
+    static monostatic wall echoes (PathSolver, los=False) solved once and added to every
+    slot. Defaults reproduce the free-space backend."""
+
+    def __init__(self, radio, snapshot_slots=4, scene=None, max_depth=1, background=False):
         import mitsuba as mi
         self.variant = select_mitsuba_variant(mi)
         from sionna.rt import load_scene, Transmitter, Receiver, PlanarArray
@@ -94,16 +117,24 @@ class SionnaBackend:
         self._mods = (load_scene, Transmitter, Receiver, PlanarArray, ConstantRCSSensingTarget)
         self.solver = RCSSolver(deterministic=True)
         self.radio, self.S = radio, snapshot_slots
+        self.scene_name, self.max_depth, self.background = scene, max_depth, background
+        self.H_bg = None
 
     def _scene(self, n_targets):
         load_scene, Transmitter, Receiver, PlanarArray, CT = self._mods
-        scene = load_scene()
+        if self.scene_name is None:
+            scene = load_scene()
+        else:
+            from sionna.rt import load_scene_from_string
+            scene = load_scene_from_string(scene_xml(self.scene_name))
         scene.frequency = self.radio.fc
         pos = list(self.radio.radar_position)
         scene.add(Transmitter("tx", position=pos))
         scene.add(Receiver("rx", position=pos))
         scene.tx_array = PlanarArray(num_rows=1, num_cols=1, polarization="V", pattern="iso")
         scene.rx_array = scene.tx_array
+        if self.background:                     # walls only, before the targets are added
+            self.H_bg = self._background(scene)
         targets = [CT(f"st{i}", sigma=1.0, length=0.02, width=0.02, height=0.02,
                       position=(10.0 + i, 10.0, 1.0)) for i in range(n_targets)]
         scene.add(targets)
@@ -115,13 +146,23 @@ class SionnaBackend:
             tg.position = mi.Point3f(*map(float, p))
             tg.velocity = mi.Vector3f(*map(float, v))
             tg.sigma = float(s)
-        paths = self.solver(scene, max_depth=1, seed=0)
+        if self.scene_name is None:
+            paths = self.solver(scene, max_depth=1, seed=0)
+        else:
+            paths = self.solver(scene, max_depth=self.max_depth, seed=0, refraction=False)
         a, tau = paths.cir(sampling_frequency=1.0 / self.radio.slot_duration, num_time_steps=num_steps,
                            normalize_delays=False, out_type="numpy")
         a = np.asarray(a).reshape(-1, num_steps)          # [paths, steps]
         tau = np.asarray(tau).reshape(-1)                 # [paths]
         # Sionna's coefficients already carry exp(-j 2 pi fc tau); add the baseband offsets.
         return a.T @ np.exp(-2j * np.pi * tau[:, None] * self.radio.re_offsets[None])
+
+    def _background(self, scene):
+        from sionna.rt import PathSolver
+        paths = PathSolver()(scene, max_depth=self.max_depth, los=False, refraction=False, seed=0)
+        a, tau = paths.cir(normalize_delays=False, out_type="numpy")
+        a, tau = np.asarray(a).reshape(-1), np.asarray(tau).reshape(-1)
+        return a @ np.exp(-2j * np.pi * tau[:, None] * self.radio.re_offsets[None])
 
     def dense(self, scn, n_slots, include_clutter=True):
         radar = np.asarray(self.radio.radar_position)
@@ -142,6 +183,8 @@ class SionnaBackend:
                 vel = np.vstack([vel, np.zeros((q, 3))])
                 sig = np.concatenate([sig, scn.clutter_rcs])
             H[n0:n0 + steps] = self.solve_points(scene, targets, pos, vel, sig, steps)
+        if self.H_bg is not None:
+            H += self.H_bg[None]
         return H
 
 

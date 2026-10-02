@@ -72,9 +72,11 @@ atexit.register(close_workers)
 
 
 # ------------------------------------------------------------------ data
-def cache_spec(cfg, backend="analytic", snapshot_slots=4, force_event=None):
-    """Inputs that determine the on-disk noiseless channel. Busy/noise RAM caches are separate."""
-    return {
+def cache_spec(cfg, backend="analytic", snapshot_slots=4, force_event=None, room=None):
+    """Inputs that determine the on-disk noiseless channel. Busy/noise RAM caches are separate.
+    `room` = {"scene", "max_depth", "background"} (Sionna multipath); omitted when None so
+    free-space fingerprints are unchanged."""
+    spec = {
         "radio": asdict(cfg.radio),
         "scenario": asdict(cfg.scenario),
         "backend": backend,
@@ -82,20 +84,24 @@ def cache_spec(cfg, backend="analytic", snapshot_slots=4, force_event=None):
         "force_event": force_event,
         "include_clutter": True,
     }
+    if room is not None:
+        spec["room"] = {"scene": room["scene"], "max_depth": int(room["max_depth"]),
+                        "background": bool(room["background"])}
+    return spec
 
 
-def cache_fingerprint(cfg, backend="analytic", snapshot_slots=4, force_event=None):
-    blob = json.dumps(cache_spec(cfg, backend, snapshot_slots, force_event),
+def cache_fingerprint(cfg, backend="analytic", snapshot_slots=4, force_event=None, room=None):
+    blob = json.dumps(cache_spec(cfg, backend, snapshot_slots, force_event, room),
                       sort_keys=True, default=str, separators=(",", ":"))
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
 
 
-def cache_root(root, cfg, backend="analytic", snapshot_slots=4, force_event=None):
+def cache_root(root, cfg, backend="analytic", snapshot_slots=4, force_event=None, room=None):
     """`root/<fingerprint>/`. A radio or scenario change cannot reuse another setting's npy files."""
-    fp = cache_fingerprint(cfg, backend, snapshot_slots, force_event)
+    fp = cache_fingerprint(cfg, backend, snapshot_slots, force_event, room)
     d = os.path.join(root, fp)
     os.makedirs(d, exist_ok=True)
-    spec = cache_spec(cfg, backend, snapshot_slots, force_event)
+    spec = cache_spec(cfg, backend, snapshot_slots, force_event, room)
     spec["fingerprint"] = fp
     spec_path = os.path.join(d, "cache_spec.json")
     if os.path.exists(spec_path):
@@ -111,18 +117,23 @@ def cache_root(root, cfg, backend="analytic", snapshot_slots=4, force_event=None
 
 def _sionna_write_batch(payload):
     """Spawn child: init CUDA, write missing npy files, exit. Must not leak into the fork parent."""
-    radio, duration, snapshot_slots, items = payload
+    radio, duration, snapshot_slots, items, room = payload
     from mdsense.channel import dense_channel as _dense
+    kw = {} if room is None else {"scene": room["scene"], "max_depth": room["max_depth"],
+                                  "background": room["background"]}
     for path, scn in items:
         if os.path.exists(path):
             continue
-        np.save(path, _dense(scn, radio, duration, backend="sionna",
-                             snapshot_slots=snapshot_slots))
+        t0 = time.time()
+        H = _dense(scn, radio, duration, backend="sionna", snapshot_slots=snapshot_slots, **kw)
+        np.save(path + ".tmp.npy", H)
+        os.replace(path + ".tmp.npy", path)   # a killed run never leaves a truncated episode
+        print(f"[sionna] {os.path.basename(path)} {time.time() - t0:.1f}s", flush=True)
 
 
 def make_split(cfg, name, n, seed0, root, backend="analytic", verbose=True, snapshot_slots=4,
-               force_event=None):
-    d = os.path.join(cache_root(root, cfg, backend, snapshot_slots, force_event), name)
+               force_event=None, room=None):
+    d = os.path.join(cache_root(root, cfg, backend, snapshot_slots, force_event, room), name)
     os.makedirs(d, exist_ok=True)
     labels = {}
     t0 = time.time()
@@ -143,7 +154,8 @@ def make_split(cfg, name, n, seed0, root, backend="analytic", verbose=True, snap
     if sionna_missing:
         ctx = multiprocessing.get_context("spawn")
         proc = ctx.Process(target=_sionna_write_batch,
-                           args=((cfg.radio, cfg.scenario.duration, snapshot_slots, sionna_missing),))
+                           args=((cfg.radio, cfg.scenario.duration, snapshot_slots, sionna_missing,
+                                  room),))
         proc.start()
         proc.join()
         if proc.exitcode:
